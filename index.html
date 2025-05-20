@@ -22,14 +22,14 @@
       .keypad {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
+        gap: 0.5rem;
         justify-content: center;
         margin: 1rem auto;
         max-width: 500px;
       }
 
       .keypad .enter-btn {
-        grid-column: span 2;
+        grid-column: span 4;
         font-size: 2rem;
         padding: 1.5rem;
       }
@@ -77,6 +77,10 @@
 
     <script type="module">
       import { numberToWords } from 'https://cdn.skypack.dev/@humanwhocodes/number-to-words?min';
+
+      const speech = new SpeechSynthesisUtterance();
+      speech.lang = 'en-US';
+      speech.rate = 0.8;
 
       const maxA = 10;
       const maxB = 10;
@@ -238,20 +242,23 @@
       let correctCount = 0;
       let wrongCount = 0;
       let a, b, result;
-      const audio = new SpeechSynthesisUtterance();
+      // const speech = new SpeechSynthesisUtterance();
+      // speech.lang = 'en-US';
+      // speech.rate = 0.8;
 
       function speak(text) {
-        audio.text = text;
-        speechSynthesis.speak(audio);
+        speech.text = text;
+        speechSynthesis.speak(speech);
       }
 
       function sayCalculation(a, b, result) {
-        const speech = new SpeechSynthesisUtterance();
+        // const speech = new SpeechSynthesisUtterance();
         const aWord = numberToWords(a);
         const bWord = numberToWords(b);
         const resultWord = numberToWords(result);
         speech.text = `${aWord} plus ${bWord} is ${resultWord}`;
-        speech.lang = 'en-US';
+        // speech.lang = 'en-US';
+        // speech.rate = 0.8;
         window.speechSynthesis.speak(speech);
       }
 
@@ -281,7 +288,7 @@
           speak(msg);
           sayCalculation(a, b, result);
           confetti.addConfetti();
-          setTimeout(generateQuestion, 10000);
+          setTimeout(generateQuestion, 8000);
         } else {
           wrongCount++;
           wrongEl.textContent = wrongCount;
