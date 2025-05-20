@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
     <style>
       body {
         text-align: center;
@@ -74,13 +75,157 @@
     <div class="keypad"></div>
     <div class="message f-text-bold"></div>
 
-    <script>
+    <script type="module">
+      import { numberToWords } from 'https://cdn.skypack.dev/@humanwhocodes/number-to-words?min';
+
       const maxA = 10;
       const maxB = 10;
       const confetti = new JSConfetti();
-      const successSounds = ['Good job!', 'Well done!', 'Excellent!'];
+      const successSounds = [
+        'Good job!',
+        'Well done!',
+        'Excellent!',
+        'You did it!',
+        'Great work!',
+        'Awesome!',
+        'Fantastic!',
+        'Super!',
+        'Nice one!',
+        'Way to go!',
+        'That’s amazing!',
+        'You’re a star!',
+        'Bravo!',
+        'Keep it up!',
+        'High five!',
+        'You rock!',
+        'Nailed it!',
+        'Superstar!',
+        'Brilliant!',
+        'Yay! That’s right!',
+      ];
+
       const errorSounds = ['Oh oh!', 'Try again!'];
-      const emojis = ['🍦', '🍭', '🍪', '🍉', '🍌'];
+      const emojis = [
+        // Food & Treats
+        '🍎',
+        '🍌',
+        '🍉',
+        '🍇',
+        '🍓',
+        '🍒',
+        '🍍',
+        '🥝',
+        '🥭',
+        '🍑',
+        '🍋',
+        '🍊',
+        '🍏',
+        '🍐',
+        '🥥',
+        '🍈',
+        '🍔',
+        '🍟',
+        '🍕',
+        '🌭',
+        '🍗',
+        '🍖',
+        '🍿',
+        '🍩',
+        '🍪',
+        '🍫',
+        '🍬',
+        '🍭',
+        '🍮',
+        '🍦',
+        '🥧',
+        '🥞',
+        '🧇',
+        '🍰',
+        '🧁',
+        '🎂',
+        '🥪',
+        '🍱',
+        '🍣',
+        '🍙',
+
+        // Animals
+        '🐶',
+        '🐱',
+        '🐭',
+        '🐹',
+        '🐰',
+        '🦊',
+        '🐻',
+        '🐼',
+        '🐨',
+        '🐯',
+        '🦁',
+        '🐮',
+        '🐷',
+        '🐸',
+        '🐵',
+        '🐔',
+        '🐧',
+        '🐦',
+        '🐤',
+        '🦆',
+
+        // Nature
+        '🌸',
+        '🌼',
+        '🌻',
+        '🌷',
+        '🌹',
+        '🌺',
+        '🌞',
+        '🌝',
+        '🌈',
+        '⭐',
+        '✨',
+        '🌟',
+        '☀️',
+        '⛅',
+        '🌤',
+        '☁️',
+        '🌦',
+        '🌧',
+        '🌬',
+        '🌪',
+
+        // Objects & Toys
+        '🎈',
+        '🎉',
+        '🎊',
+        '🎁',
+        '🎨',
+        '🧸',
+        '🪀',
+        '🪁',
+        '🪆',
+        '🧩',
+        '🛴',
+        '🚲',
+        '🏀',
+        '⚽',
+        '🏈',
+        '⚾',
+        '🎳',
+        '🎯',
+        '🎮',
+        '🕹️',
+
+        // Vehicles
+        '🚗',
+        '🚕',
+        '🚙',
+        '🚌',
+        '🚓',
+        '🚑',
+        '🚒',
+        '🚜',
+        '✈️',
+        '🚀',
+      ];
 
       const correctEl = document.getElementById('correct');
       const wrongEl = document.getElementById('wrong');
@@ -98,6 +243,16 @@
       function speak(text) {
         audio.text = text;
         speechSynthesis.speak(audio);
+      }
+
+      function sayCalculation(a, b, result) {
+        const speech = new SpeechSynthesisUtterance();
+        const aWord = numberToWords(a);
+        const bWord = numberToWords(b);
+        const resultWord = numberToWords(result);
+        speech.text = `${aWord} plus ${bWord} is ${resultWord}`;
+        speech.lang = 'en-US';
+        window.speechSynthesis.speak(speech);
       }
 
       function getRandomInt(max) {
@@ -122,9 +277,11 @@
           correctEl.textContent = correctCount;
           const msg =
             successSounds[Math.floor(Math.random() * successSounds.length)];
+          questionEl.textContent = `${a} + ${b} = ${result}`;
           speak(msg);
+          sayCalculation(a, b, result);
           confetti.addConfetti();
-          setTimeout(generateQuestion, 1500);
+          setTimeout(generateQuestion, 10000);
         } else {
           wrongCount++;
           wrongEl.textContent = wrongCount;
