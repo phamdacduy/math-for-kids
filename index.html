@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kids Math Game</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatifycss/dist/css/flatify.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <style>
+      body {
+        text-align: center;
+
+        font-size: 2rem;
+      }
+      .emoji {
+        font-size: 3rem;
+      }
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        justify-content: center;
+        margin: 1rem auto;
+        max-width: 500px;
+      }
+
+      .keypad .enter-btn {
+        grid-column: span 2;
+        font-size: 2rem;
+        padding: 1.5rem;
+      }
+      .question,
+      .stats,
+      .message {
+        margin: 1rem 0;
+      }
+      .question {
+        font-size: 5rem;
+      }
+
+      nav span {
+        margin: 0 0.5rem;
+      }
+      .menu-items-wrapper {
+        height: 3.5rem !important;
+      }
+      .emoji-display {
+        font-size: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="menu-items-wrapper navbar f-row flex-center">
+      <span>Correct</span>
+      <span class="badge style-green edge-circle pulse" id="correct">0</span>
+      <span>Wrong:</span>
+      <span id="wrong" class="my-badge badge style-red edge-circle pulse"
+        >0</span
+      >
+    </nav>
+
+    <div class="question f-card"></div>
+    <div class="emoji-display"></div>
+    <input
+      id="answer"
+      type="text"
+      class="f-input"
+      readonly
+      style="text-align: center"
+    />
+    <div class="keypad"></div>
+    <div class="message f-text-bold"></div>
+
+    <script>
+      const maxA = 10;
+      const maxB = 10;
+      const confetti = new JSConfetti();
+      const successSounds = ['Good job!', 'Well done!', 'Excellent!'];
+      const errorSounds = ['Oh oh!', 'Try again!'];
+      const emojis = ['🍦', '🍭', '🍪', '🍉', '🍌'];
+
+      const correctEl = document.getElementById('correct');
+      const wrongEl = document.getElementById('wrong');
+      const questionEl = document.querySelector('.question');
+      const emojiEl = document.querySelector('.emoji-display');
+      const keypad = document.querySelector('.keypad');
+      const answerInput = document.getElementById('answer');
+      const messageEl = document.querySelector('.message');
+
+      let correctCount = 0;
+      let wrongCount = 0;
+      let a, b, result;
+      const audio = new SpeechSynthesisUtterance();
+
+      function speak(text) {
+        audio.text = text;
+        speechSynthesis.speak(audio);
+      }
+
+      function getRandomInt(max) {
+        return Math.floor(Math.random() * (max + 1));
+      }
+
+      function generateQuestion() {
+        a = getRandomInt(maxA);
+        b = getRandomInt(maxB);
+        result = a + b;
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        questionEl.textContent = `${a} + ${b} = ?`;
+        emojiEl.innerHTML = `${emoji.repeat(a)} + ${emoji.repeat(b)}`;
+        answerInput.value = '';
+        messageEl.textContent = '';
+      }
+
+      function checkAnswer() {
+        const userAnswer = parseInt(answerInput.value);
+        if (userAnswer === result) {
+          correctCount++;
+          correctEl.textContent = correctCount;
+          const msg =
+            successSounds[Math.floor(Math.random() * successSounds.length)];
+          speak(msg);
+          confetti.addConfetti();
+          setTimeout(generateQuestion, 1500);
+        } else {
+          wrongCount++;
+          wrongEl.textContent = wrongCount;
+          const msg =
+            errorSounds[Math.floor(Math.random() * errorSounds.length)];
+          speak(msg);
+          messageEl.textContent = msg;
+          answerInput.value = '';
+        }
+      }
+
+      function createKeypad() {
+        for (let i = 1; i <= 9; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'button';
+          btn.textContent = i;
+          btn.onclick = () => (answerInput.value += i);
+          keypad.appendChild(btn);
+        }
+
+        const zeroBtn = document.createElement('button');
+        zeroBtn.className = 'button  ';
+        zeroBtn.textContent = '0';
+        zeroBtn.onclick = () => (answerInput.value += '0');
+        keypad.appendChild(zeroBtn);
+
+        const clearBtn = document.createElement('button');
+        clearBtn.className = 'button style-danger';
+        clearBtn.textContent = '⌫';
+        clearBtn.onclick = () => (answerInput.value = '');
+        keypad.appendChild(clearBtn);
+
+        const enterBtn = document.createElement('button');
+        enterBtn.className = 'button enter-btn style-accent';
+        enterBtn.textContent = '✓';
+        enterBtn.onclick = checkAnswer;
+        keypad.appendChild(enterBtn);
+      }
+
+      createKeypad();
+      generateQuestion();
+    </script>
+  </body>
+</html>
