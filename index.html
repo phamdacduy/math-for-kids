@@ -12,13 +12,18 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <nav class="menu-items-wrapper navbar f-row flex-center">
-      <span>Correct</span>
-      <span class="badge style-green edge-circle pulse" id="correct">0</span>
-      <span>Wrong:</span>
-      <span id="wrong" class="my-badge badge style-red edge-circle pulse"
-        >0</span
-      >
+    <nav class="menu-items-wrapper navbar f-row flex-center space-between">
+      <div class="stats f-row flex-center">
+        <span class="badge style-green edge-circle pulse" id="correct">0</span>
+        <span>✅</span>
+        <!-- </div>
+        <div> -->
+        <span id="wrong" class="my-badge badge style-red edge-circle pulse"
+          >0</span
+        >
+        <span>❌</span>
+      </div>
+
       <button class="button style-primary" id="settingsBtn">⚙️</button>
     </nav>
 
@@ -39,7 +44,7 @@
     <!-- Modal -->
     <div class="mymodal" id="settingsModal">
       <div class="mymodal-content">
-        <h2>Settings</h2>
+        <h3>Settings</h3>
         <label>Select operators:</label>
         <div id="operatorCheckboxes">
           <label class="checkbox-wrapper"

@@ -53,10 +53,10 @@ function applySettings() {
   generateQuestion();
 }
 
-function generateHints(result) {
+function generateHints(result, operator) {
   if (result <= 20) {
     const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-    emojiEl.innerHTML = `${emoji.repeat(a)} + ${emoji.repeat(b)}`;
+    emojiEl.innerHTML = `${emoji.repeat(a)} ${operator} ${emoji.repeat(b)}`;
   }
 }
 function generateQuestion(maxAttempts = 9999) {
@@ -95,7 +95,7 @@ function generateQuestion(maxAttempts = 9999) {
     attempts < maxAttempts
   );
 
-  generateHints(result);
+  generateHints(result, operator);
   questionEl.textContent = `${a} ${operator} ${b} = ?`;
   answerInput.value = '';
   messageEl.textContent = '';
@@ -156,3 +156,9 @@ function createKeypad() {
 
 createKeypad();
 generateQuestion();
+
+answerInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    checkAnswer();
+  }
+});
