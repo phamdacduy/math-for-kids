@@ -1,0 +1,73 @@
+body {
+  touch-action: manipulation;
+  text-align: center;
+
+  font-size: 2rem;
+}
+.emoji {
+  font-size: 3rem;
+}
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* gap: 0.2rem; */
+  justify-content: center;
+  margin: 1rem auto;
+  max-width: 550px;
+}
+
+.keypad .enter-btn {
+  grid-column: span 4;
+  font-size: 2rem;
+  padding: 1.5rem;
+}
+.question,
+.stats,
+.message {
+  margin: 1rem 0;
+}
+.question {
+  font-size: 5rem;
+}
+.f-input {
+  font-size: 5rem;
+}
+nav span {
+  margin: 0 0.5rem;
+}
+.menu-items-wrapper {
+  height: 3.5rem !important;
+}
+.emoji-display {
+  font-size: 3rem;
+}
+
+/* modal */
+.mymodal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.mymodal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: left;
+}
+
+#operatorCheckboxes {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.checkbox-wrapper {
+  margin-right: 2rem;
+}
